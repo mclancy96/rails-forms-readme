@@ -110,5 +110,3 @@ So, when would you choose one over the other? Below are some real world examples
 * `form_for` - this works well for forms that manage CRUD. Imagine that you have a blog posting application. A great fit for the `form_for` method would be the `Post` model. This is because the `Post` model would have the standard Active Record setup, and therefore it's smart to take advantage of the prepackaged functionality built into `form_for`.
 
 * `form_tag` - this works well for forms that are not directly connected with models. For example, let's say that our blog posting application has a search engine. The search form would be a great fit for using a `form_tag`.
-
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/rails-forms-readme' title='Form_tag'>Form_tag</a> on Learn.co and start learning to code for free.</p>
