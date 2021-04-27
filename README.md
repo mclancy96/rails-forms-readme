@@ -20,6 +20,7 @@ In this lesson we will review:
 
 * Walk through the different form options
 
+
 ## `form_tag`
 
 Attributes of the `form_tag` helper:
