@@ -1,4 +1,4 @@
-# Rails Forms Overview
+# Rails Forms
 
 Imagine that you're on a roadtrip across the country (I'm already jealous) with a starting point of Santa Barbara and a final destination of New York City. If you enter the addresses into Google Maps, you'll be shown multiple routes, and each route has an associated duration.
 
