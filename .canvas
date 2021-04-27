@@ -1,6 +1,6 @@
 ---
 :lessons:
-- :id: 74104
+- :id: rails-forms
   :course_id: 3300
-  :canvas_url: https://learning.flatironschool.com/courses/3300/assignments/74104
-  :type: assignment
+  :canvas_url: https://learning.flatironschool.com/courses/3300/pages/rails-forms
+  :type: page
