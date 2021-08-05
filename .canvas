@@ -1,6 +1,10 @@
 ---
 :lessons:
-- :id: rails-forms-overview
-  :course_id: 3300
-  :canvas_url: https://learning.flatironschool.com/courses/3300/pages/rails-forms-overview
+- :id: 13283
+  :course_id: 356
+  :canvas_url: https://learning.flatironschool.com/courses/356/pages/rails-forms
+  :type: page
+- :id: 13283
+  :course_id: 356
+  :canvas_url: https://learning.flatironschool.com/courses/356/pages/rails-forms-overview
   :type: page
