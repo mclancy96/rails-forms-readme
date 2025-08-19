@@ -1,6 +1,6 @@
 # Rails Forms Overview
 
-**Note:** This lesson is written for students working on legacy Rails codebases that still use `form_tag` and `form_for`. In the current versions of Rails, these helpers are considered legacy and should not be used in new code. The modern and recommended approach is to use `form_with`, which is covered below. However, you will encounter `form_tag` and `form_for` in older projects, so it is important to understand them.
+> **Note:** This lesson is written for students working on legacy Rails codebases that still use `form_tag` and `form_for`. In the current versions of Rails, these helpers are considered legacy and should not be used in new code. The modern and recommended approach is to use `form_with`, which is covered below. However, you will encounter `form_tag` and `form_for` in older projects, so it is important to understand them.
 
 Imagine that you're on a roadtrip across the country (I'm already jealous) with
 a starting point of Santa Barbara and a final destination of New York City. If
@@ -208,11 +208,11 @@ To summarize the differences:
 
 ## Quick Reference Table
 
-| Helper      | Use Case                        | Legacy? | Notes                                  |
-|-------------|----------------------------------|---------|----------------------------------------|
-| form_tag    | Forms not tied to a model        | Yes     | Use only in legacy codebases           |
-| form_for    | Forms tied to a model (CRUD)     | Yes     | Use only in legacy codebases           |
-| form_with   | All new forms (model or not)     | No      | Preferred for all new Rails code       |
+| Helper      | Use Case                        | Notes                                  |
+|-------------|----------------------------------|----------------------------------------|
+| form_tag    | Forms not tied to a model        | Use only in legacy codebases           |
+| form_for    | Forms tied to a model (CRUD)     | Use only in legacy codebases           |
+| form_with   | All new forms (model or not)     | Preferred for all new Rails code       |
 
 **References:**
 - [Rails Guides: Form Helpers](https://guides.rubyonrails.org/form_helpers.html)
