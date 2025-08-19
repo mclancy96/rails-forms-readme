@@ -1,5 +1,7 @@
 # Rails Forms Overview
 
+**Note:** This lesson is written for students working on legacy Rails codebases that still use `form_tag` and `form_for`. In the current versions of Rails, these helpers are considered legacy and should not be used in new code. The modern and recommended approach is to use `form_with`, which is covered below. However, you will encounter `form_tag` and `form_for` in older projects, so it is important to understand them.
+
 Imagine that you're on a roadtrip across the country (I'm already jealous) with
 a starting point of Santa Barbara and a final destination of New York City. If
 you enter the addresses into Google Maps, you'll be shown multiple routes, and
@@ -28,7 +30,11 @@ In this lesson we will review:
 
 - Walk through the different form options
 
-## `form_tag`
+
+## `form_tag` (Legacy)
+
+
+**Legacy Notice:** `form_tag` is considered legacy as of Rails 5.1 and should not be used in new code. It is covered here for reference and to help you work with older codebases.
 
 Attributes of the `form_tag` helper:
 
@@ -64,7 +70,11 @@ This will build a form and auto generate the following HTML:
 </form>
 ```
 
-## `form_for`
+
+## `form_for` (Legacy)
+
+
+**Legacy Notice:** `form_for` is also considered legacy as of Rails 5.1 and should not be used in new code. It is covered here for reference and to help you work with older codebases.
 
 Attributes for the `form_for` form helper method:
 
@@ -104,39 +114,105 @@ The `form_for` above will auto generate the following HTML:
 </form>
 ```
 
-## Differences between `form_for` and `form_tag`
+## `form_with` (Recommended)
 
-Getting back to our roadtrip example, in order to make an informed decision on
-what route to take we need to know everything possible about both options. In
-like manner, in order to make a good choice for which form element to use, it's
-vital to understand the subtle but extremely important differences between the
-two:
+As of Rails 5.1, `form_with` is the recommended way to build forms in Rails. It unifies the functionality of `form_tag` and `form_for` into a single, flexible helper. You should use `form_with` for all new code.
 
-- `form_for` is essentially an advanced form helper that will yield a
-  `FormBuilder` object that you use to generate your form elements (text fields,
-  labels, a submit button, etc.)
+Attributes of the `form_with` helper:
 
-- `form_tag` is a lower-level form helper that simply generates a `form`
-  element. To add fields to the `form_tag` block, you add form element tags,
-  such as `text_field_tag`, `number_field_tag`, `submit_tag`, etc.
+- Modern, flexible form helper introduced in Rails 5.1
+- Can be used with or without a model object
+- Yields a `FormBuilder` object, similar to `form_for`
+- By default, generates forms that submit data via AJAX (remote: true), but you can disable this
 
-- `form_tag` makes no assumptions about what you're trying to do, and you're
-  responsible for specifying exactly what the form is supposed to do (send a
-  `POST` request, `PATCH` request, etc.)
+Example using a model object:
 
-- `form_for` handles the retrieval of values from your object model and will
-  also try to route the form to the appropriate action specified in the
-  controller
+```erb
+<%= form_with(model: @cat, local: true) do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name %>
+  <%= form.label :color %>
+  <%= form.text_field :color %>
+  <%= form.submit %>
+<% end %>
+```
 
-So, when would you choose one over the other? Below are some real world
-examples:
+Example without a model object:
 
-- `form_for` - this works well for forms that manage CRUD. Imagine that you have
-  a blog posting application. A great fit for the `form_for` method would be the
-  `Post` model. This is because the `Post` model would have the standard Active
-  Record setup, and therefore it's smart to take advantage of the prepackaged
-  functionality built into `form_for`.
+```erb
+<%= form_with(url: "/cats", local: true) do |form| %>
+  <%= form.label :name, "Name" %>
+  <%= form.text_field :name %>
+  <%= form.label :color, "Color" %>
+  <%= form.text_field :color %>
+  <%= form.submit "Create Cat" %>
+<% end %>
+```
 
-- `form_tag` - this works well for forms that are not directly connected with
-  models. For example, let's say that our blog posting application has a search
-  engine. The search form would be a great fit for using a `form_tag`.
+**Note:** The `local: true` option makes the form submit with a normal HTTP request instead of AJAX, which is often preferred for beginners and for compatibility with legacy code.
+
+
+## Understanding Params Structure and Strong Parameters
+
+All three helpers (`form_tag`, `form_for`, and `form_with`) generate form fields that result in a similar nested params structure when the form is submitted. For example, if you have a form for a `Cat` model with fields for `name` and `color`, the submitted params will look like this:
+
+```ruby
+{
+  "cat" => {
+    "name" => "Whiskers",
+    "color" => "Tabby"
+  }
+}
+```
+
+
+This means that in your controller, you can access the values with `params[:cat][:name]` and `params[:cat][:color]`. This nested structure is consistent across all three helpers, making it easier to work with model attributes in Rails controllers.
+
+### Handling Params in the Controller (Strong Parameters)
+
+In modern Rails applications, you should use strong parameters to safely handle form input. For example, in your `CatsController`, you might have:
+
+```ruby
+def create
+  @cat = Cat.new(cat_params)
+  if @cat.save
+    redirect_to @cat
+  else
+    render :new
+  end
+end
+
+private
+
+def cat_params
+  params.require(:cat).permit(:name, :color)
+end
+```
+
+This ensures that only the permitted attributes (`name` and `color`) are allowed through from the form submission.
+
+## Differences between `form_with`, `form_for`, and `form_tag`
+
+To summarize the differences:
+
+- `form_with` is the modern, unified form helper. It can be used with or without a model, and is the only form helper you should use in new Rails code.
+- `form_for` and `form_tag` are legacy helpers. They are still present in the current versions of Rails for backward compatibility, but should not be used in new code. You may encounter them in older codebases.
+- `form_for` is best for forms tied to a model (CRUD operations), while `form_tag` is for forms not directly associated with a model (like search forms). `form_with` can handle both use cases.
+
+**When to use which:**
+
+- Use `form_with` for all new forms.
+- Learn `form_for` and `form_tag` only to maintain or understand legacy code.
+
+---
+
+## Quick Reference Table
+
+| Helper      | Use Case                        | Legacy? | Notes                                  |
+|-------------|----------------------------------|---------|----------------------------------------|
+| form_tag    | Forms not tied to a model        | Yes     | Use only in legacy codebases           |
+| form_for    | Forms tied to a model (CRUD)     | Yes     | Use only in legacy codebases           |
+| form_with   | All new forms (model or not)     | No      | Preferred for all new Rails code       |
+
+**References:**
+- [Rails Guides: Form Helpers](https://guides.rubyonrails.org/form_helpers.html)
